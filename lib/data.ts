@@ -1,6 +1,3 @@
-import { url } from "inspector";
-import { title } from "process";
-
 const data = {
     headerMenus:[
         {
