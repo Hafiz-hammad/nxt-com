@@ -5,11 +5,11 @@ export type IProductInput = z.infer<typeof ProductInputSchema>;
 
 export type Data = {
     products: IProductInput[];
-    headerMenu: {
+    headerMenus: {
         name: string
         href: string
     }[]
-    carousel:{
+    carousels:{
         image:string
         url:string
         title:string

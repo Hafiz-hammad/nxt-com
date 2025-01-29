@@ -1,5 +1,6 @@
 import { Data,IProductInput } from "@/types";
 import { toSlug } from "./utils";
+import { string } from "zod";
 
 const products: IProductInput[] = [
     {
@@ -710,7 +711,7 @@ const data:Data = {
     products,
     headerMenus:[
         {
-            name: "Today's Deals",
+            name:"Today's Deals",
             href: "/search?tag=todays-deals"
         },
         {
