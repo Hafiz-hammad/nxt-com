@@ -4,7 +4,7 @@ import Image from "next/image"
 
 type CardItem = {
     title: string
-    Link:{text:string,href:string}
+    link:{text:string,href:string}
     items: {
         name: string
         items?:string[]
@@ -49,10 +49,10 @@ width={120}
     </div>
 </CardContent>
 {
-    card.Link &&(
+    card.link &&(
         <CardFooter >
-            <Link href={card.Link.href} className="mt-4 block">
-            {card.Link.text}
+            <Link href={card.link.href} className="mt-4 block">
+            {card.link.text}
             </Link>
         </CardFooter>
     )
