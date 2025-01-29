@@ -18,3 +18,23 @@ export const toSlug = (text: string): string =>
     .replace(/[^\w\s-]+/g, '') // Remove all non-word characters except whitespace and hyphens
     .replace(/\s+/g, '-') // Corrected: Replace one or more whitespace characters with a single hyphen
     .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
+
+
+
+
+
+    const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+      currency: 'USD',
+      style: 'currency',
+      minimumFractionDigits: 2,
+})
+
+export function formatCurrency(amout: number){
+  return CURRENCY_FORMATTER.format(amout)
+}
+
+const NUMBER_FORMATTER = new Intl.NumberFormat('en-US')
+
+export function formatNumber(number: number){
+  return NUMBER_FORMATTER.format(number)
+}

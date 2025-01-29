@@ -1,7 +1,9 @@
 // "use client"
+import { Card, CardContent } from "@/components/ui/card";
 import { HomeCard } from "@/components/ui/shared/home/Home-card";
 import { HomeCarousel } from "@/components/ui/shared/home/home-carousel";
-import { getAllCategories, getProductsForCard } from "@/lib/actions/product.action";
+import ProductSlider from "@/components/ui/shared/product/product-slider";
+import { getAllCategories, getProductByTag, getProductsForCard } from "@/lib/actions/product.action";
 import data from "@/lib/data";
 import { toSlug } from "@/lib/utils";
 
@@ -54,6 +56,7 @@ export default async function Page(){
       },
     },
   ] 
+  const todaysDeals = await getProductByTag({tag:'todays-deal'})
   return(
     <>
     <HomeCarousel items={data.carousels}/>
@@ -61,7 +64,14 @@ export default async function Page(){
 
       <HomeCard card={cards}/>
     
-    </div>
+ <Card className="w-full rounded-none">
+
+  <CardContent className="p-4 items-center gap-3">
+<ProductSlider title={"Todays Deals"} products={todaysDeals}/>
+  </CardContent>
+  </Card>
+  
+     </div>
     
     </>
   )
