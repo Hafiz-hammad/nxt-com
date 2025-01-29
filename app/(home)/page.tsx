@@ -24,9 +24,9 @@ export default async function Page(){
         href: '/search',
       },
       items: categories.map((category) => ({
-        name: category as string,
-        image: `/images/${toSlug(category as string)}.jpg`,
-        href: `/search?category=${category as string}`,
+        name: category,
+        image: `/images/${toSlug(category)}.jpg`,
+        href: `/search?category=${category}`,
       })),
     },
     {
