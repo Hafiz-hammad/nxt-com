@@ -1,5 +1,6 @@
 // "use client"
 import { Card, CardContent } from "@/components/ui/card";
+import BrowsingHistoryList from "@/components/ui/shared/browsing-history-list";
 import { HomeCard } from "@/components/ui/shared/home/Home-card";
 import { HomeCarousel } from "@/components/ui/shared/home/home-carousel";
 import ProductSlider from "@/components/ui/shared/product/product-slider";
@@ -82,7 +83,9 @@ export default async function Page(){
   </Card>
   
      </div>
-    
+<div className="bg-background p-4">
+  <BrowsingHistoryList/>
+  </div>    
     </>
   )
 

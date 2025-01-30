@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import BrowsingHistoryList from "@/components/ui/shared/browsing-history-list";
+import AddToBrowsingHistory from "@/components/ui/shared/product/add-to-browsing-history";
 import ProductGallery from "@/components/ui/shared/product/product-gallary";
 import ProductPrice from "@/components/ui/shared/product/product-price";
 import ProductSlider from "@/components/ui/shared/product/product-slider";
@@ -41,6 +43,7 @@ export default async function ProductDetails(props: {
 
     return (
         <div>
+ <AddToBrowsingHistory id={product._id} category={product.category}/>
             <section>
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div className="col-span-2">
@@ -115,6 +118,10 @@ export default async function ProductDetails(props: {
                     products={relatedProduct.data}
                     title={`Best Sellers in ${product.category}`}
                 />
+            </section>
+            <section>
+<BrowsingHistoryList className="mt-10"/>
+
             </section>
         </div>
     );
