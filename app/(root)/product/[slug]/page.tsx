@@ -6,7 +6,6 @@ import ProductSlider from "@/components/ui/shared/product/product-slider";
 import Rating from "@/components/ui/shared/product/rating";
 import SelectVariant from "@/components/ui/shared/product/select-variant";
 import { getProductBySlug, getRelatedProductByCategory } from "@/lib/actions/product.action";
-import Product from "@/lib/db/models/product.model";
 
 export async function generateMetadata(props: {
     params: Promise<{ slug: string }>
