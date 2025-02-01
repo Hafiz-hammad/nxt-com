@@ -13,14 +13,15 @@ import { IProduct } from '@/lib/db/models/product.model'
 import Link from 'next/link'
 import Image from 'next/image'
 import Rating from './rating'
-import { formatNumber } from '@/lib/utils'
-import { Card, CardContent, CardHeader } from '../../card'
+import { formatNumber, generateid, round2 } from '@/lib/utils'
+import { Card, CardContent, CardFooter, CardHeader } from '../../card'
+import AddToCart from './add-to-cart'
 
 const ProductCard = ({
   product,
   hideBorder = false,
   hideDetails = false,
-//   hideAddToCart = false,
+  hideAddToCart = false,
 }: {
   product: IProduct
   hideDetails?: boolean
@@ -98,6 +99,29 @@ const ProductCard = ({
 //     </div>
   )
 
+const AddButton = () =>(
+  <div className='w-full text-center'>
+<AddToCart 
+minimal
+item={{
+  clientId: generateid(),
+  product: product._id,
+  size: product.sizes[0],
+  color: product.colors[0],
+  countInStock: product.countInStock,
+  name: product.name,
+  slug: product.slug,
+  category: product.category,
+  price: round2(product.price),
+  quantity: 1,
+  image: product.images[0],
+}}
+/>
+
+
+  </div>
+)
+
   return hideBorder ? (
     <div className='flex flex-col'>
       <ProductImage />
@@ -106,7 +130,7 @@ const ProductCard = ({
           <div className='p-3 flex-1 text-center'>
             <ProductDetails />
           </div>
-          {/* {!hideAddToCart && <AddButton />} */}
+          {!hideAddToCart && <AddButton />}
         </>
       )}
     </div>
@@ -120,9 +144,9 @@ const ProductCard = ({
           <CardContent className='p-3 flex-1  text-center'>
             <ProductDetails />
           </CardContent>
-          {/* <CardFooter className='p-3'>
+          <CardFooter className='p-3'>
             {!hideAddToCart && <AddButton />}
-          </CardFooter> */}
+          </CardFooter>
         </>
       )}
     </Card>
