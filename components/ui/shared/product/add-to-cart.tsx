@@ -22,7 +22,7 @@ export default function AddToCart({
 }: {
   item: OrderItem
   minimal?: boolean
-}) {
+  }) {
   const router = useRouter()
   const { toast } = useToast()
 
@@ -38,17 +38,18 @@ export default function AddToCart({
       className='rounded-full w-auto'
       onClick={() => {
         try {
-          addItem(item, 1)
+            addItem(item, 1)
           toast({
-            description: ('Product.Added to Cart'),
+            description:'Added to Cart',
             action: (
               <Button
                 onClick={() => {
                   router.push('/cart')
                 }}
               >
-                {('Product.Go to Cart')}
-              </Button>
+                Go to Cart
+               
+                </Button>
             ),
           })
         } catch (error: any) {
@@ -59,8 +60,8 @@ export default function AddToCart({
         }
       }}
     >
-      {('Product.Add to Cart')}
-    </Button>
+      Add to Cart
+          </Button>
   ) : (
     <div className='w-full space-y-2'>
       <Select
@@ -69,7 +70,7 @@ export default function AddToCart({
       >
         <SelectTrigger className=''>
           <SelectValue>
-            {('Product.Quantity')}: {quantity}
+          Quintity: {quantity}
           </SelectValue>
         </SelectTrigger>
         <SelectContent position='popper'>
@@ -87,7 +88,9 @@ export default function AddToCart({
         onClick={async () => {
           try {
             const itemId = await addItem(item, quantity)
+            // console.log(itemId,'itemId IN Newsein')  
             router.push(`/cart/${itemId}`)
+            // console.log(itemId,'itemId IN Newsein')
           } catch (error: any) {
             toast({
               variant: 'destructive',
@@ -96,7 +99,7 @@ export default function AddToCart({
           }
         }}
       >
-        {('Product.Add to Cart')}
+        Add to Cart
       </Button>
       <Button
         variant='secondary'
@@ -113,7 +116,8 @@ export default function AddToCart({
         }}
         className='w-full rounded-full '
       >
-        {('Product.Buy Now')}
+
+        Buy Now
       </Button>
     </div>
   )

@@ -12,7 +12,7 @@ export const calcDeliveryDateAndPrice = async({
         items.reduce((acc,item) => acc + item.price * item.quantity, 0)
     )
 const shippingPrice = itemPrice > FREE_SHIPPING_MIN_PRICE ? 0 :5
-const taxPrice = round2(itemPrice *0.15)
+const taxPrice = round2(itemPrice * 0.15)
 const totalPrice = round2(itemPrice + 
     
     (shippingPrice ? round2(shippingPrice):0) + (taxPrice ? round2(taxPrice):0)

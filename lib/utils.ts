@@ -42,5 +42,5 @@ export function formatNumber(number: number){
 export const round2 = (num:number)=>Math.round((num+Number.EPSILON)*100)/100
 
 
-export const generateid = ()=>
+export const generateId = ()=>
   Array.from({length:24}, () => Math.floor(Math.random()*10)).join('')

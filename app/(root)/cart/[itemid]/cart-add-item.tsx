@@ -1,18 +1,14 @@
 'use client'
-// import BrowsingHistoryList from '@/components/shared/browsing-history-list'
-// import ProductPrice from '@/components/shared/product/product-price'
+import ProductPrice from '@/components/ui/shared/product/product-price'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { CheckCircle2Icon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+// import { notFound } from 'next/navigation'
 import useCartStore from '@/hooks/use-cart-store'
-// import useSettingStore from '@/hooks/use-setting-store'
-// import { useTranslations } from 'next-intl'
 import BrowsingHistoryList from '@/components/ui/shared/browsing-history-list'
-import ProductPrice from '@/components/ui/shared/product/product-price'
 import { FREE_SHIPPING_MIN_PRICE } from '@/lib/constant'
 
 export default function CartAddItem({ itemId }: { itemId: string }) {
@@ -20,9 +16,9 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
     cart: { items, itemsPrice },
   } = useCartStore()
   const item = items.find((x) => x.clientId === itemId)
-
+console.log(item,"jnddnjdnjncncnjsncjn")
   // const t = useTranslations()
-  if (!item) return notFound()
+  if (!item) return <h1 className='font-bold font-9xl'>Not Found</h1>
   return (
     <div>
       <div className='grid grid-cols-1 md:grid-cols-2 md:gap-4'>
@@ -70,7 +66,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
                       />
                     </span>{' '}
                     
-                      Cart.of eligible items to your order to qualify for FREE Shipping
+                      Cart.\\\of eligible items to your order to qualify for FREE Shipping
                     
                   </div>
                 ) : (

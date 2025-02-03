@@ -8,7 +8,7 @@ const ImageHover = ({
   hoverSrc,
   alt,
 }: {
-  src: string
+  src:string
   hoverSrc: string
   alt: string
 }) => {

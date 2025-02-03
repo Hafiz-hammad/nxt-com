@@ -13,7 +13,7 @@ import AddToBrowsingHistory from '@/components/ui/shared/product/add-to-browsing
 import { Separator } from '@/components/ui/separator'
 import BrowsingHistoryList from '@/components/ui/shared/browsing-history-list'
 import ProductSlider from '@/components/ui/shared/product/product-slider'
-import {generateid, round2 } from '@/lib/utils'
+import {generateId, round2 } from '@/lib/utils'
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -116,11 +116,11 @@ export default async function ProductDetails(props: {
 )}
                 {product.countInStock !== 0 ? (
                   <div className='text-green-700 text-xl'>
-                    {('Product.In Stock')}
+                    In Stock
                   </div>
                 ) : (
                   <div className='text-destructive text-xl'>
-                    {('Product.Out of Stock')}
+                    Out of Stock
                   </div>
                 )}
 
@@ -128,7 +128,7 @@ export default async function ProductDetails(props: {
                   <div className='flex justify-center items-center'>
                     <AddToCart
                       item={{
-                        clientId: generateid(),
+                        clientId: generateId(),
                         product: product._id,
                         countInStock: product.countInStock,
                         name: product.name,

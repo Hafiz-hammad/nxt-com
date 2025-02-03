@@ -35,7 +35,7 @@ export default function CartButton() {
         )}
         <span className='font-bold'>Cart</span>
 
-      </div>
+      </div> 
     </Link>
   )
 }
