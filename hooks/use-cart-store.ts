@@ -4,136 +4,139 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 const initialState: Cart = {
-  items:[],
-  itemsPrice:0,
-  taxPrice:undefined,
-  shippingPrice:undefined,
-  totalPrice:0,
-  paymentMethod:undefined,
-  deliveryDateIndex:undefined,
-}
+  items: [],
+  itemsPrice: 0,
+  taxPrice: undefined,
+  shippingPrice: undefined,
+  totalPrice: 0,
+  paymentMethod: undefined,
+  deliveryDateIndex: undefined,
+};
 
 interface CartState {
-  cart:Cart
-  addItem: ( item:OrderItem, quantity:number ) => Promise<string>
-
-
-  updateItem:(item:OrderItem,quantity:number) =>Promise<void>
-  removeItem:(item:OrderItem)=> void
-}
-const useCartStore  = create(
-persist<CartState>(
-  (set,get)=>({
-    cart:initialState,
-
-
-
-    addItem:async (item:OrderItem,quantity:number) =>{
-const {items} = get().cart
-const existItem = items.find(
-  (x)=>
-    x.product === item.product &&
-    x.color === item.color && 
-    x.size === item.size
-)
-// console.log(items,"Checking Items in tpday")
-
-if(existItem){
-  if(existItem.countInStock < quantity + existItem.quantity){
-    throw new Error('Not enough items in stock')
-  }
-
-}else{
-  if(item.countInStock < item.quantity){
-    throw new Error('Not enough items in stock')
-  }
+  cart: Cart;
+  addItem: (item: OrderItem, quantity: number) => Promise<string>;
+  updateItem: (item: OrderItem, quantity: number) => Promise<void>;
+  removeItem: (item: OrderItem) => Promise<void>;
 }
 
-const updatedCartItems = existItem ?
-items.map((x)=>
-x.product === item.product &&
-x.color === item.color &&
-x.size === item.size 
-?{...existItem,quantity:existItem.quantity + quantity} : x
-)
-: [...items,{...item,quantity}]
+const useCartStore = create(
+  persist<CartState>(
+    (set, get) => ({
+      cart: initialState,
 
-set({
-  cart:{
-    ...get().cart,
-    items:updatedCartItems,
-    ...(await calcDeliveryDateAndPrice({
-      items:updatedCartItems,
-    }))
-  },
-})
-//eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-return updatedCartItems.find(
-  (x)=>
-    x.product === item.product &&
-  x.color === item.color &&
-  x.size === item.size
-)?.clientId!
-    },
+      addItem: async (item: OrderItem, quantity: number) => {
+        const { items } = get().cart;
+        const existItem = items.find(
+          (x) =>
+            x.product === item.product &&
+            x.color === item.color &&
+            x.size === item.size
+        );
 
-    updateItem: async (item:OrderItem,quantity:number) => {
-      const {items} = get().cart
-      const exist = items.find(
-      (x)=>
-         x.product === item.product &&
-      x.color === item.color &&
-      x.size === item.size
-      )
+        if (existItem) {
+          if (existItem.countInStock < quantity + existItem.quantity) {
+            throw new Error("Not enough items in stock");
+          }
+        } else {
+          if (item.countInStock < quantity) {
+            throw new Error("Not enough items in stock");
+          }
+        }
 
-if(!exist) return
-const updatedCartItems = items.map((x)=>
-  x.product === item.product &&
-x.color === item.color &&
-x.size === item.size
-?{...exist,quantity:quantity}:
-x
+        const updatedCartItems = existItem
+          ? items.map((x) =>
+              x.product === item.product &&
+              x.color === item.color &&
+              x.size === item.size
+                ? { ...existItem, quantity: existItem.quantity + quantity }
+                : x
+            )
+          : [...items, { ...item, quantity }];
 
-)
+        const deliveryData = await calcDeliveryDateAndPrice({
+          items: updatedCartItems,
+        });
 
-set({
-  cart:{
-    ...get().cart,
-    items:updatedCartItems,
-    ...(await calcDeliveryDateAndPrice({
-      items:updatedCartItems,
-    })),
-  },
-})
-    },
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            itemsPrice: updatedCartItems.reduce((total, x) => total + x.price * x.quantity, 0), // Calculate itemsPrice
+            ...deliveryData,
+          },
+        });
+// eslint-disable-next-line
+        return updatedCartItems.find(
+          (x) =>
+            x.product === item.product &&
+            x.color === item.color &&
+            x.size === item.size
+        )?.clientId!;
+      },
 
-removeItem:async (item:OrderItem) =>{
-  const {items} = get().cart
-  const updatedCartItems = items.filter(
-    (x) =>
-      x.product !== item.product ||
-      x.color !== item.color ||
-      x.size !== item.size
+      updateItem: async (item: OrderItem, quantity: number) => {
+        const { items } = get().cart;
+        const exist = items.find(
+          (x) =>
+            x.product === item.product &&
+            x.color === item.color &&
+            x.size === item.size
+        );
+
+        if (!exist) return;
+
+        const updatedCartItems = items.map((x) =>
+          x.product === item.product &&
+          x.color === item.color &&
+          x.size === item.size
+            ? { ...exist, quantity }
+            : x
+        );
+
+        const deliveryData = await calcDeliveryDateAndPrice({
+          items: updatedCartItems,
+        });
+
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            itemsPrice: updatedCartItems.reduce((total, x) => total + x.price * x.quantity, 0), // Calculate itemsPrice
+            ...deliveryData,
+          },
+        });
+      },
+
+      removeItem: async (item: OrderItem) => {
+        const { items } = get().cart;
+        const updatedCartItems = items.filter(
+          (x) =>
+            x.product !== item.product ||
+            x.color !== item.color ||
+            x.size !== item.size
+        );
+
+        const deliveryData = await calcDeliveryDateAndPrice({
+          items: updatedCartItems,
+        });
+
+        set({
+          cart: {
+            ...get().cart,
+            items: updatedCartItems,
+            itemsPrice: updatedCartItems.reduce((total, x) => total + x.price * x.quantity, 0), // Calculate itemsPrice
+            ...deliveryData,
+          },
+        });
+      },
+
+      init: () => set({ cart: initialState }),
+    }),
+    {
+      name: "cart-store",
+    }
   )
-  set({
-    cart:{
-      ...get().cart,
-      items:updatedCartItems,
-      ...(await calcDeliveryDateAndPrice({
-        items:updatedCartItems,
-      })),
-    },
-  })
-},
+);
 
-
-
-
-    init:() => set({cart:initialState}),
-  }),
-  {
-    name:'cart-store',
-  }
-)
-
-)
-export default useCartStore
+export default useCartStore;

@@ -15,13 +15,10 @@ export const formatNumberWithDecimal =(num:number):string=>{
 export const toSlug = (text: string): string =>
   text
     .toLowerCase()
-    .replace(/[^\w\s-]+/g, '') // Remove all non-word characters except whitespace and hyphens
-    .replace(/\s+/g, '-') // Corrected: Replace one or more whitespace characters with a single hyphen
-    .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
-
-
-
-
+    .replace(/[^\w\s-]+/g, '') 
+    .replace(/\s+/g, '-') 
+        .replace(/^-+|-+$/g, '')
+            .replace(/-+/g, '-')
 
     const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
       currency: 'USD',
