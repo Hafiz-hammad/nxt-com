@@ -39,6 +39,8 @@ import Link from 'next/link'
 import useCartStore from '@/hooks/use-cart-store'
 import ProductPrice from '@/components/ui/shared/product/product-price'
 import { APP_NAME, AVAILABLE_DELEVERY_DATES, AVAILABLE_PAYMENT_METHODS, DEFAULT_PAYMENT_METHOD } from '@/lib/constant'
+import { createOrder } from '@/lib/actions/order.action'
+import { toast } from '@/hooks/use-toast'
 // import useSettingStore from '@/hooks/use-setting-store'
 // import ProductPrice from '@/components/shared/product/product-price'
 
@@ -51,7 +53,7 @@ const shippingAddressDefaultValues =
         province: 'sindh',
         phone: '0320-1200-650',
         postalCode: '75000',
-        country: 'Pakistan',
+        country: 'Pakistan ',
       }
     : {
         fullName: '',
@@ -90,7 +92,7 @@ const CheckoutForm = () => {
     setPaymentMethod,
     updateItem,
     removeItem,
-    // clearCart,
+    clearCart,
     setDeliveryDateIndex,
   } = useCartStore()
   const isMounted = useIsMounted()
@@ -122,32 +124,32 @@ const CheckoutForm = () => {
     useState<boolean>(false)
 
   const handlePlaceOrder = async () => {
-    // const res = await createOrder({
-    //   items,
-    //   shippingAddress,
-    //   expectedDeliveryDate: calculateFutureDate(
-    //     availableDeliveryDates[deliveryDateIndex!].daysToDeliver
-    //   ),
-    //   deliveryDateIndex,
-    //   paymentMethod,
-    //   itemsPrice,
-    //   shippingPrice,
-    //   taxPrice,
-    //   totalPrice,
-    // })
-    // if (!res.success) {
-    //   toast({
-    //     description: res.message,
-    //     variant: 'destructive',
-    //   })
-    // } else {
-    //   toast({
-    //     description: res.message,
-    //     variant: 'default',
-    //   })
-    //   clearCart()
-    //   router.push(`/checkout/${res.data?.orderId}`)
-    // }
+    const res = await createOrder({
+      items,
+      shippingAddress,
+      expectedDeliveryDate: calculateFutureDate(
+        AVAILABLE_DELEVERY_DATES[deliveryDateIndex!].daysToDelevery
+      ),
+      deliveryDateIndex,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    })
+    if (!res.success) {
+      toast({
+        description: res.message,
+        variant: 'destructive',
+      })
+    } else {
+      toast({
+        description: res.message,
+        variant: 'default',
+      })
+      clearCart()
+      router.push(`/checkout/${res.data?.orderId}`)
+    }
   }
   const handleSelectPaymentMethod = () => {
     setIsAddressSelected(true)
